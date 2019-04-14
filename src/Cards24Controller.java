@@ -26,6 +26,10 @@ public class Cards24Controller {
 
     @FXML
     void onKeyTyped(KeyEvent event) {
+        if (event.getEventType().equals(KeyEvent.KEY_TYPED))
+        if(!numberRequired.contains(Integer.parseInt(event.getCharacter())) &&  !event.getCharacter().matches("[-+*\\/()]"))
+            event.consume();
+    }
 
     }
 
