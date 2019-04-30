@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Logger class to more easily create logs
+ */
 public class Logger {
 
     /**
