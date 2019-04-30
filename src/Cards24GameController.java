@@ -20,6 +20,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+
+/**
+ * Controller for Card24Game FXML scene
+ */
 public class Cards24GameController {
 
     /**
