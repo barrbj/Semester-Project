@@ -95,26 +95,6 @@ public class Cards24GameController {
         });
 
         verifyBtn.setOnAction(event -> {
-            try {
-                if (engine.eval(expressionTextField.getText()).equals(24) && checkEquationNumbersMatch(expressionTextField.getText())) {
-                    timer.cancel();
-                    ButtonType playAgain = new ButtonType("Play Again", ButtonBar.ButtonData.OK_DONE);
-                    ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                            "You were able to get the numbers you received equal to 24. \n Your completion time was " + time.getText() + "\n You solved the game in " + attempts + " attempts.",
-                            playAgain,
-                            exit);
-                    alert.setTitle("");
-                    alert.setHeaderText("Congratulations");
-                    Optional<ButtonType> result = alert.showAndWait();
-
-                    logger.log("==========Game==========");
-                    logger.log("Attempts: " + attempts);
-                    logger.log("Time to solve: " + time.getText());
-                    logger.log("========================");
-
-                    if (result.orElse(exit) == playAgain) {
-                        refresh();
             if (!expressionTextField.getText().isEmpty()){
                 try {
                     if (engine.eval(expressionTextField.getText()).equals(24) && checkEquationNumbersMatch(expressionTextField.getText())) {
@@ -141,22 +121,14 @@ public class Cards24GameController {
                         }
 
                     } else {
-                        System.exit(0);
                         attempts++;
                         expressionTextField.clear();
                         expressionTextField.setPromptText("Incorrect, Try again!");
                     }
-
-                } else {
-                    attempts++;
-                    System.out.println("Error");
                 } catch (ScriptException e) {
                     e.printStackTrace();
                 }
-            } catch (ScriptException e) {
-                e.printStackTrace();
             }
-
         });
 
         findASolutionBtn.setOnAction(event -> {
