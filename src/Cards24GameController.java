@@ -117,6 +117,7 @@ public class Cards24GameController {
 
                     if (result.orElse(exit) == playAgain) {
                         refresh();
+            if (!expressionTextField.getText().isEmpty()){
                     } else {
                         System.exit(0);
                     }
