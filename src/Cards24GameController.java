@@ -48,8 +48,6 @@ public class Cards24GameController {
 
     private Timer timer = new Timer();
 
-    private int count = 0;
-
     private int attempts = 0;
 
     private File[] cardDir = new File("png").listFiles();
@@ -235,8 +233,8 @@ public class Cards24GameController {
         Group selectedCards = new Group();
         cardPane.getChildren().add(selectedCards);
         Timeline timeline = new Timeline();
-        count = 0;
-        while (count < 4) {
+        int cardCount = 0;
+        while (cardCount < 4) {
             String[] cardFileName = cardDir[rand.nextInt(cardDir.length)].getName().split("_");
             Card card = null;
             try {
@@ -245,11 +243,11 @@ public class Cards24GameController {
                 e.printStackTrace();
             }
             ImageView selectedCard = new ImageView(card.getCardImage());
-            selectedCard.setLayoutX(-200 + count * 130);
+            selectedCard.setLayoutX(-200 + cardCount * 130);
             selectedCard.setLayoutY(-200);
             selectedCard.setFitWidth(90);
             selectedCard.setFitHeight(150);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(count), e -> {
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(cardCount), e -> {
                 TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), selectedCard);
                 translateTransition.setToX(selectedCard.getX() + 200);
                 translateTransition.setToY(selectedCard.getY() + 215);
@@ -265,7 +263,7 @@ public class Cards24GameController {
             });
             timeline.getKeyFrames().add(keyFrame);
             selectedCards.getChildren().add(selectedCard);
-            count++;
+            cardCount++;
         }
         timeline.play();
 
