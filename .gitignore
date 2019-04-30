@@ -61,3 +61,5 @@ crashlytics-build.properties
 # Created by .ignore support plugin (hsz.mobi)
 log.txt
 src/META-INF/MANIFEST.MF
+.project
+.classpath
