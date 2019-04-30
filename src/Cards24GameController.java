@@ -66,7 +66,6 @@ public class Cards24GameController {
         Task loadingTask = new Task() {
             @Override
             protected Object call() {
-                //generateOperatorOrders(new ArrayList<>(Arrays.asList("+", "-", "*", "/")), new Stack<>(), 3);
                 generateOperatorOrders(new ArrayList<>(Arrays.asList("+", "-", "*", "/", "+", "-", "*", "/", "+", "-", "*", "/")), new Stack<>(), 3);
                 return null;
             }
