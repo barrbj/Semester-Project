@@ -3,13 +3,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 
+/**
+ * Logger class to more easily create logs
+ */
 public class Logger {
 
+    /**
+     * The file in which events are logged.
+     */
     private File file;
 
+    /**
+     * Initialization of the logger class. This is where the file is assigned to the file object as well as if the file doesn't exist it will be created.
+     */
     public Logger() {
         this.file = new File("log.txt");
         try {
@@ -19,6 +27,10 @@ public class Logger {
         }
     }
 
+    /**
+     * Method of logging a string of information into a log file that also contains the timestamp of when the log was made.
+     * @param string The data which is to appear in the log file.
+     */
     public void log(String string){
         try {
             BufferedWriter bufferedWriter  = new BufferedWriter(new FileWriter(file, true));

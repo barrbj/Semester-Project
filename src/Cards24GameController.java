@@ -20,7 +20,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+
+/**
+ * Controller for Card24Game FXML scene
+ */
 public class Cards24GameController {
+
+    /**
+     * FXML Variables
+     */
 
     @FXML
     private Pane rootPane;
@@ -46,19 +54,44 @@ public class Cards24GameController {
     @FXML
     private Text time;
 
+    /**
+     * The timer for the elapsed time of a game.
+     */
     private Timer timer = new Timer();
 
+    /**
+     * The amount of attempts that a user takes to complete a game
+     */
     private int attempts = 0;
 
+    /**
+     * The directory that contains all of the card textures
+     */
     private File[] cardDir = new File("png").listFiles();
 
+    /**
+     * The engine that provides Javascript scripting functions
+     */
     private ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
+    /**
+     * The list that contains every possible orders that the cards available can be in
+     */
     private List<Integer[]> possibleNumberOrders = new ArrayList<>();
+
+    /**
+     * The list that contains every possible orders that operators can be in
+     */
     private List<String[]> possibleOperatorOrders = new ArrayList<>();
 
+    /**
+     * The logger instance which is used to log things to a log file
+     */
     private Logger logger = new Logger();
 
+    /**
+     * Initializes the scene for the card game, which includes the loading of solutions, setting the close request, fading in the scene, calling the refresh method which loads in the cards, and setting the verify and find a solution buttons to their corresponding functions
+     */
     @FXML
     public void initialize() {
         findASolutionBtn.setText("Loading Solutions");
@@ -94,40 +127,38 @@ public class Cards24GameController {
         });
 
         verifyBtn.setOnAction(event -> {
-            if (!expressionTextField.getText().isEmpty()){
-                try {
-                    if (engine.eval(expressionTextField.getText()).equals(24) && checkEquationNumbersMatch(expressionTextField.getText())) {
-                        timer.cancel();
-                        ButtonType playAgain = new ButtonType("Play Again", ButtonBar.ButtonData.OK_DONE);
-                        ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                                "You were able to get the numbers you received equal to 24. \n Your completion time was " + time.getText() + "\n You solved the game in " + attempts + " attempts.",
-                                playAgain,
-                                exit);
-                        alert.setTitle("");
-                        alert.setHeaderText("Congratulations");
-                        Optional<ButtonType> result = alert.showAndWait();
+            try {
+                if (engine.eval(expressionTextField.getText()).equals(24) && checkEquationNumbersMatch(expressionTextField.getText())) {
+                    timer.cancel();
+                    ButtonType playAgain = new ButtonType("Play Again", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "You were able to get the numbers you received equal to 24. \n Your completion time was " + time.getText() + "\n You solved the game in " + attempts + " attempts.",
+                            playAgain,
+                            exit);
+                    alert.setTitle("");
+                    alert.setHeaderText("Congratulations");
+                    Optional<ButtonType> result = alert.showAndWait();
 
-                        logger.log("==========Game==========");
-                        logger.log("Attempts: " + attempts);
-                        logger.log("Time to solve: " + time.getText());
-                        logger.log("========================");
+                    logger.log("==========Game==========");
+                    logger.log("Attempts: " + attempts);
+                    logger.log("Time to solve: " + time.getText());
+                    logger.log("========================");
 
-                        if (result.orElse(exit) == playAgain) {
-                            refresh();
-                        } else {
-                            System.exit(0);
-                        }
-
+                    if (result.orElse(exit) == playAgain) {
+                        refresh();
                     } else {
-                        attempts++;
-                        expressionTextField.clear();
-                        expressionTextField.setPromptText("Incorrect, Try again!");
+                        System.exit(0);
                     }
-                } catch (ScriptException e) {
-                    e.printStackTrace();
+
+                } else {
+                    attempts++;
+                    System.out.println("Error");
                 }
+            } catch (ScriptException e) {
+                e.printStackTrace();
             }
+
         });
 
         findASolutionBtn.setOnAction(event -> {
@@ -164,6 +195,10 @@ public class Cards24GameController {
         });
     }
 
+    /**
+     * An event that when triggered will check the key typed and see if it is a digit or a operator. If it is neither it will then consume the key typed meaning it will not be added.
+     * @param event The event that is used to check when a key is typed on a keyboard.
+     */
     @FXML
     void onKeyTyped(KeyEvent event) {
         if (event.getEventType().equals(KeyEvent.KEY_TYPED))
@@ -172,6 +207,9 @@ public class Cards24GameController {
     }
 
 
+    /**
+     * A method that starts the round and refreshes it. It sets up the timer that runs the elapsed time of the game, as well as selects four random cards from the card deck and shows them visually on the scene including sound and animation.
+     */
     public void refresh() {
         attempts = 0;
         time.setText("00:00");
@@ -244,6 +282,11 @@ public class Cards24GameController {
 
     }
 
+    /**
+     * This checks to see if the equation includes the correct numbers that correspond to the card numbers that are currently available.
+     * @param equation
+     * @return
+     */
     private boolean checkEquationNumbersMatch(String equation) {
 
         String[] numbers = equation.replace("(", "").replace(")", "").split("[-+*\\/()]");
@@ -263,6 +306,12 @@ public class Cards24GameController {
 
     }
 
+    /**
+     * This generates every possible orders the card numbers available can be in and stores them in a list.
+     * @param numbers The possible card numbers that are available to use.
+     * @param permutation A stack that contains the permutation of possible cards.
+     * @param size The size that is required of the permutation.
+     */
     private void generateNumberOrders(List<Integer> numbers, Stack<Integer> permutation, int size) {
         if (permutation.size() == size) {
             possibleNumberOrders.add(permutation.toArray(new Integer[0]));
@@ -276,7 +325,12 @@ public class Cards24GameController {
         }
     }
 
-
+    /**
+     * This generates every possible orders that operators can be in and stores them in a list.
+     * @param operators The possible operators that are available to use.
+     * @param permutation A stack that contains the permutation of possible operators.
+     * @param size The size that is required of the permutation.
+     */
     private void generateOperatorOrders(List<String> operators, Stack<String> permutation, int size) {
         if (permutation.size() == size) {
             possibleOperatorOrders.add(permutation.toArray(new String[0]));
@@ -290,7 +344,10 @@ public class Cards24GameController {
         }
     }
 
-
+    /**
+     * This generates every possible equation that the numbers and operators as well as parentheses can be in and stores them in a list.
+     * @return The list of possible equations
+     */
     private List<String> generateEquation() {
         String equation = "";
         List<String> equations = new ArrayList<>();
@@ -331,6 +388,9 @@ public class Cards24GameController {
         return equations;
     }
 
+    /**
+     * This method is responsible for shutting down the application and stopping the timer to prevent memory leaking
+     */
     public void shutdown() {
         timer.cancel();
         System.exit(0);
