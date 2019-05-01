@@ -153,7 +153,8 @@ public class Cards24GameController {
 
                 } else {
                     attempts++;
-                    System.out.println("Error");
+                    expressionTextField.clear();
+                    expressionTextField.setPromptText("Incorrect, Try Again");
                 }
             } catch (ScriptException e) {
                 e.printStackTrace();
@@ -232,6 +233,7 @@ public class Cards24GameController {
 
         Random rand = new Random();
 
+        expressionTextField.setPromptText("");
         cardPane.getChildren().clear();
         expressionTextField.clear();
         solutionTextField.clear();
