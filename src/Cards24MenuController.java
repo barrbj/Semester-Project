@@ -35,7 +35,9 @@ public class Cards24MenuController {
 
     @FXML
     private Button playButton;
-
+ /**Code below Initializes the start menu GUI to show two random cards on 
+     * each side of the play button and their animations.  
+     */
     @FXML
     public void initialize() throws FileNotFoundException {
 
@@ -58,7 +60,10 @@ public class Cards24MenuController {
         rotateTransition2.setCycleCount(Animation.INDEFINITE);
         rotateTransition2.play();
 
-
+/**
+ * Code below enables the setonaction event on the play button along with its animation.  
+ * Loads the cards24Game.fxml file to begin the next part of game. 
+ */
 
         playButton.setOnAction(event -> {
             FadeTransition menuFadeOutTransition = new FadeTransition(Duration.millis(2000));
